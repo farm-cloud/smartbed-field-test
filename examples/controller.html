@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <h3>제어명령 등록</h3>
+    <button type="submit" id="ctrl">요청</button>
+    <br><br>
+    <hr>
+    <h3>제어명령상태 확인</h3>
+    <button type="submit" id="ctrlStat">요청</button>
+    <div id="div-ctrl"></div>
+    <div id="div-ctrlstat"></div>
+
+    <script>
+      $(document).ready(function() {
+        $('#ctrl').click(function() {
+          requestCtrl();
+        });
+        $('#ctrlStat').click(function() {
+
+        });
+      });
+      let request_body = '<?xml version="1.0" encoding="UTF-8"?><m2m:cin xmlns:m2m="http://www.onem2m.org/xml/protocols" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con>AGQyAAACEAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</con></m2m:cin>';
+      function requestCtrl() {
+        $.ajax({
+          type: "POST",
+          url: "http://211.253.24.33:7599/mobius/10.10.10.1/ctrlreq",
+          headers: {
+            "X-M2M-RI" : "12345",
+            "X-M2M-Origin" : "/0.2.481.1.21160310105204806",
+            "Content-Type" : "application/vnd.onem2m-res+xml;ty=4"
+          },
+          data : { xml: request_body },
+          dataType: "xml",
+          jsonp: "callback",
+          success: function(data) {
+            console.log(data);
+          },
+          error: function(request,status,error) {
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Nvd3 - reusable charts for D3.js</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $('body').ready(function() {
+            // preload iframe with message
+            var iframe = document.getElementById('show');
+            var iframedoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframedoc.body.innerHTML = ''
+                + '<br><br>'
+                + '<div style="text-align: center; color: #CCC; font-family: arial; font-size: 14px; font-weight:bold;">'
+                + '상단의 센서 또는 제어기를 선택해주세요.'
+                + '</div>';
+
+            $('.showcontrollers').click(function(evt){
+                evt.preventDefault();
+                evt.stopPropagation();
+                $(evt.target).fadeOut();
+                $('.sensorlinks').stop().slideUp({complete: function() {
+                    $('.showsensors').fadeIn();
+                    $('.controllerlinks').slideDown();
+                }});
+            });
+            $('.showsensors').click(function(evt){
+                evt.preventDefault();
+                evt.stopPropagation();
+                $(evt.target).fadeOut();
+                $('.controllerlinks').stop().slideUp({complete: function() {
+                    $('.showcontrollers').fadeIn();
+                    $('.sensorlinks').slideDown();
+                }});
+            });
+            $('.examplelinks a').each(function(i, elem) {
+                $(elem).click(function(evt) {
+                    $('#show').prop('src', $(evt.target).prop('href'));
+                    evt.stopPropagation();
+                    evt.preventDefault();
+                    $('.examplelinks a').removeClass('selected');
+                    $(evt.target).addClass('selected');
+                    return false;
+                });
+            });
+        });
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+</head>
+<body>
+
+<header>
+    <h1 style="padding-top:20px;padding-bottom:20px;">스마트베드 현장 테스트</h1>
+</header>
+
+<div id="banner">
+    <div>
+        <span id="logo"></span>
+
+        <a href="https://github.com/nvd3-community/nvd3" target="_blank" class="button fork docs"><strong>현장 테스트 설명</strong></a>
+        <a href="https://drive.google.com/open?id=1p2eSm2tRozj0NCjWH7CoOOeaUL6g92D6Ls2fBY-3SrE" class="button fork docs" target="_blank"><strong>노드-클라우드 데이터 규약</strong></a>
+    </div>
+</div><!-- end banner -->
+
+<div class="wrapper">
+    <nav>
+        <ul></ul>
+    </nav>
+    <section>
+        <h3>센서 데이터 수집, 시각화 및 제어</h3>
+        <br>
+
+        <div>
+            <a href="#" class="showsensors">&nbsp;센 서&nbsp;</a>
+            <a href="#" class="showcontrollers">&nbsp;제 어&nbsp;</a>
+        </div>
+        <div class="examplelinks sensorlinks">
+            <a href="sensor_lid_8.html" style="font-size:110%;">센서 LID #8</a> |
+            <a href="sensor_lid_9.html" style="font-size:110%;">센서 LID #9</a>
+        </div>
+
+        <div class="examplelinks controllerlinks">
+            <a href="controller.html" style="font-size:110%;">제어기 #1</a>
+        </div>
+
+        <div id="show_wrapper"><iframe id="show"></iframe></div>
+
+    </section>
+</div>
+</body>
+</html>
